@@ -50,6 +50,10 @@ botonJugar.addEventListener("click", ()=>{
 
 });
 
+botonReset.addEventListener("click", ()=>{
+    location.reload();
+}); 
+
 //-----------Fin Main--------------
 
 
@@ -165,14 +169,13 @@ function opcionAleatoria(){
     papelPC.src = "img/papelOrdenador.png";
     tijeraPC.src = "img/tijeraOrdenador.png"; 
 
-    let indiceMaquina = Math.floor(Math.random()*posibilidades.length);
+    indiceMaquina = Math.floor(Math.random()*posibilidades.length);
 
     switch(posibilidades[indiceMaquina]){
 
         case("piedra"):
             maquina.appendChild(piedraPC);
             resultadoMaquina = posibilidades[0];
-            indiceMaquina = 0;
             break;
 
         case("papel"):
@@ -227,7 +230,8 @@ function resultadoPartida(){
     
      
 
-    if (contadorActual > numTotal) {
+    if (contadorActual >= numTotal) {
+        comparaResultados();
 
         //Se crea "li" de final de partida
         const finPartida = document.createElement("li");
@@ -253,8 +257,6 @@ function resultadoPartida(){
         comparaResultados();
 
     }
-
-    
 
 }
 
