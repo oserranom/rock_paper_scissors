@@ -8,6 +8,7 @@ const nombreJugador = document.querySelector("body input[type='text']");
 const numPartidas = document.querySelector("body input[type='number']");
 const opcionesJugador = document.getElementById("jugador");
 const historial = document.getElementById("historial");
+historial.style.listStyle = "none"; //Aquí elimino los puntitos de los "li" que no me gustan
 const maquina = document.getElementById("maquina"); 
 
 const total = document.getElementById("total");
@@ -51,11 +52,19 @@ botonJugar.addEventListener("click", ()=>{
 });
 
 botonReset.addEventListener("click", ()=>{
-    location.reload();
+    restableceJuego();
 }); 
 
 //-----------Fin Main--------------
 
+//Creando función reset
+function restableceJuego(){
+    numPartidas.disabled = false;
+    contadorActual = 0;
+    actual.textContent = contadorActual
+    total.textContent = 0; 
+    botonYa.disabled = false; 
+}
 
 //Creando función de validación del nombre:
 function validaNombre(nombre){
@@ -199,21 +208,26 @@ function opcionAleatoria(){
 
 function comparaResultados(){
 
-    let resultadoTirada = document.createElement("li")
+    let resultadoTirada = document.createElement("li");
+    resultadoTirada.style.width = "25%"; 
 
     if(indiceJugador == indiceMaquina){
         resultadoTirada.textContent = "¡Empate!";
-        resultadoTirada.style.backgroundColor = "orange";
+        resultadoTirada.style.backgroundColor = "#FFD580";
         historial.appendChild(resultadoTirada);  
     }else{
-        if(indiceMaquina > indiceJugador){
-            resultadoTirada.textContent = "gana la máquina";
-            resultadoTirada.style.backgroundColor = "red";
+        if((indiceJugador + 1) % 3 === indiceMaquina) {
+
+            resultadoTirada.textContent = "Gana la máquina";
+            resultadoTirada.style.backgroundColor = "#FFCCCB";
             historial.appendChild(resultadoTirada);
+
         }else{
-            resultadoTirada.textContent = "gana el jugador";
-            resultadoTirada.style.backgroundColor = "blue";
+
+            resultadoTirada.textContent = "Gana " + nombreJugador.value;
+            resultadoTirada.style.backgroundColor = "lightgreen";
             historial.appendChild(resultadoTirada); 
+           
         }
     }
 
