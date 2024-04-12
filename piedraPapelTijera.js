@@ -9,7 +9,8 @@ const numPartidas = document.querySelector("body input[type='number']");
 const opcionesJugador = document.getElementById("jugador");
 const historial = document.getElementById("historial");
 historial.style.listStyle = "none"; //Aquí elimino los puntitos de los "li" que no me gustan
-const maquina = document.getElementById("maquina"); 
+const maquina = document.getElementById("maquina");
+
 
 const total = document.getElementById("total");
 const actual = document.getElementById("actual"); 
@@ -21,7 +22,7 @@ const botonReset = botones[2];
 
 //Variables de estado:
 
-let contadorActual = 1; 
+let contadorActual = 0; 
 let numTotal;
 let indiceJugador;
 let indiceMaquina; 
@@ -39,6 +40,7 @@ botonJugar.addEventListener("click", ()=>{
     validaNumPartidas(numPartidas);
     
     if(validaNombreJugador(nombreJugador) && validaNumPartidas(numPartidas)){
+        contadorActual++; 
         actual.textContent = contadorActual; 
         cargaOpciones(); 
         seleccionaImg();
@@ -57,13 +59,38 @@ botonReset.addEventListener("click", ()=>{
 
 //-----------Fin Main--------------
 
-//Creando función reset
+//Creando función para reestablecer el juego
 function restableceJuego(){
     numPartidas.disabled = false;
+    numPartidas.value = 0;
     contadorActual = 0;
-    actual.textContent = contadorActual
+    actual.textContent = contadorActual;
     total.textContent = 0; 
     botonYa.disabled = false; 
+
+    imgsPorDefecto(); 
+}
+
+//Función para cargar imágenes por defecto
+
+function imgsPorDefecto(){
+
+    eliminaDefaultImgs();
+
+    const contenedor = document.getElementById("jugador"); 
+    
+    for(let i = 0; i < 3; i++){
+        const imgDefecto = document.createElement("img");
+        imgDefecto.src = "img/defecto.png";
+        contenedor.appendChild(imgDefecto); 
+    }   
+
+    const imgMaquina = document.querySelector("#maquina img"); 
+    imgMaquina.remove();
+    const imgDefecto = document.createElement("img");
+    imgDefecto.src = "img/defecto.png";
+    maquina.appendChild(imgDefecto); 
+
 }
 
 //Creando función de validación del nombre:
@@ -106,11 +133,7 @@ function validaNumPartidas(numero){
 //Creando función para eliminar los pingüinos y añadir las opciones:
 function cargaOpciones(){
 
-    let imgPingu = document.querySelectorAll("#jugador img"); 
-
-    for(let i = 0; i < imgPingu.length; i++){
-        imgPingu[i].remove(); 
-    }
+    eliminaDefaultImgs();
 
     const piedraJugador = document.createElement("img");
     const papelJugador = document.createElement("img");
@@ -126,8 +149,16 @@ function cargaOpciones(){
 
 }
 
-//Creando función de selección y asignación
+//Esta función de borrar imágenes la separamos de cargaOpciones() porque nos vendrá bien luego...
+function eliminaDefaultImgs(){
+    let imgPingu = document.querySelectorAll("#jugador img"); 
 
+    for(let i = 0; i < imgPingu.length; i++){
+        imgPingu[i].remove(); 
+    }
+}
+
+//Creando función de selección y asignación
 function seleccionaImg(){
 
     const opcionJugador = document.querySelectorAll("#jugador img"); 
@@ -164,10 +195,9 @@ function seleccionaImg(){
 //Creando la function para la opción de la máquina 
 
 function opcionAleatoria(){
+    const imgMaquina = document.querySelector("#maquina img");  
 
-    const imgMaquina = document.querySelector("#maquina img"); 
-
-    if(imgMaquina){
+    if(imgMaquina){  
         imgMaquina.remove();
     }
 
