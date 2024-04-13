@@ -3,7 +3,6 @@ var posibilidades = ["piedra", "papel", "tijera"];
 //    //
 
 //Identificando elementos:
-
 const nombreJugador = document.querySelector("body input[type='text']"); 
 const numPartidas = document.querySelector("body input[type='number']");
 const opcionesJugador = document.getElementById("jugador");
@@ -21,7 +20,6 @@ const botonYa = botones[1];
 const botonReset = botones[2]; 
 
 //Variables de estado:
-
 let contadorActual = 0; 
 let numTotal;
 let indiceJugador;
@@ -33,65 +31,42 @@ let resultadoMaquina;
 
 //----------Main: ----------------
 
-
+//Se detecta el evento click en el boton ¡JUGAR!
 botonJugar.addEventListener("click", ()=>{
-
+    
+    //Se llaman a las funciones de validación de los campos nombre y num. de partidas
     validaNombreJugador(nombreJugador);
     validaNumPartidas(numPartidas);
     
+    //Si pasan las validaciones al pulsar ¡JUGAR! el programa continua
     if(validaNombreJugador(nombreJugador) && validaNumPartidas(numPartidas)){
+        //Inicia la primera partida poniendo el contador a 1 y volcandolo en el span actual.
         contadorActual++; 
         actual.textContent = contadorActual; 
+
+        //Se llaman a las funciones que cargan las imagenes del juego y recogeran los datos que marca el usuario.
         cargaOpciones(); 
         seleccionaImg();
 
+        //Se detecta el click de usuario en el botón YA para llamar a resultadoPartida(), y que la app 
+        //Vaya volcando los resultados en el historial.
         botonYa.addEventListener("click", resultadoPartida); 
 
     } else {
+        //Se añade un alert si el usuario no pasa la validación de ususario y num. de partidas
+        //No lo piden las especs pero es más intuitivo así.
         alert("Comprueba los datos \"nombre\" y/o \"partidas\" "); 
     }
 
 });
 
+//Se llama a restableceJuego() al clickar en el botón RESET
 botonReset.addEventListener("click", ()=>{
     restableceJuego();
 }); 
 
 //-----------Fin Main--------------
 
-//Creando función para reestablecer el juego
-function restableceJuego(){
-    numPartidas.disabled = false;
-    numPartidas.value = 0;
-    contadorActual = 0;
-    actual.textContent = contadorActual;
-    total.textContent = 0; 
-    botonYa.disabled = false; 
-
-    imgsPorDefecto(); 
-}
-
-//Función para cargar imágenes por defecto
-
-function imgsPorDefecto(){
-
-    eliminaDefaultImgs();
-
-    const contenedor = document.getElementById("jugador"); 
-    
-    for(let i = 0; i < 3; i++){
-        const imgDefecto = document.createElement("img");
-        imgDefecto.src = "img/defecto.png";
-        contenedor.appendChild(imgDefecto); 
-    }   
-
-    const imgMaquina = document.querySelector("#maquina img"); 
-    imgMaquina.remove();
-    const imgDefecto = document.createElement("img");
-    imgDefecto.src = "img/defecto.png";
-    maquina.appendChild(imgDefecto); 
-
-}
 
 //Creando función de validación del nombre:
 function validaNombre(nombre){
@@ -130,7 +105,17 @@ function validaNumPartidas(numero){
     }
 }
 
-//Creando función para eliminar los pingüinos y añadir las opciones:
+
+//Función para eliminar la imagenes de la sección #jugador:
+function eliminaDefaultImgs(){
+    let imgPingu = document.querySelectorAll("#jugador img"); 
+
+    for(let i = 0; i < imgPingu.length; i++){
+        imgPingu[i].remove(); 
+    }
+}
+
+//Creando función para eliminar los pingüinos y añadir las opciones del usuario:
 function cargaOpciones(){
 
     eliminaDefaultImgs();
@@ -149,16 +134,8 @@ function cargaOpciones(){
 
 }
 
-//Esta función de borrar imágenes la separamos de cargaOpciones() porque nos vendrá bien luego...
-function eliminaDefaultImgs(){
-    let imgPingu = document.querySelectorAll("#jugador img"); 
 
-    for(let i = 0; i < imgPingu.length; i++){
-        imgPingu[i].remove(); 
-    }
-}
-
-//Creando función de selección y asignación
+//Creando función de selección del usuario y guardar la selección:
 function seleccionaImg(){
 
     const opcionJugador = document.querySelectorAll("#jugador img"); 
@@ -192,8 +169,7 @@ function seleccionaImg(){
     }    
 }
 
-//Creando la function para la opción de la máquina 
-
+//Creando la function para que la máquina tome una opción aleatoria:
 function opcionAleatoria(){
     const imgMaquina = document.querySelector("#maquina img");  
 
@@ -236,6 +212,7 @@ function opcionAleatoria(){
     console.log(resultadoMaquina);    
 }
 
+//Creando la función que compara el resultado escogio por el user contra la opción aleatoria de la máquina:
 function comparaResultados(){
 
     let resultadoTirada = document.createElement("li");
@@ -266,14 +243,11 @@ function comparaResultados(){
 }
 
 
-//function de comparación de resultados y volcado de datos
-
+//Función de control de partidas y finalización del juego: 
 function resultadoPartida(){
     
     opcionAleatoria(); 
     
-     
-
     if (contadorActual >= numTotal) {
         comparaResultados();
 
@@ -303,6 +277,40 @@ function resultadoPartida(){
     }
 
 }
+
+//Creando función para reestablecer el juego al clickar en RESET:
+function restableceJuego(){
+    numPartidas.disabled = false;
+    numPartidas.value = 0;
+    contadorActual = 0;
+    actual.textContent = contadorActual;
+    total.textContent = 0; 
+    botonYa.disabled = false; 
+
+    imgsPorDefecto(); 
+}
+
+//Función para volver a cargar las imágenes por defecto al llamar a restableceJuego():
+function imgsPorDefecto(){
+
+    eliminaDefaultImgs();
+
+    const contenedor = document.getElementById("jugador"); 
+    
+    for(let i = 0; i < 3; i++){
+        const imgDefecto = document.createElement("img");
+        imgDefecto.src = "img/defecto.png";
+        contenedor.appendChild(imgDefecto); 
+    }   
+
+    const imgMaquina = document.querySelector("#maquina img"); 
+    imgMaquina.remove();
+    const imgDefecto = document.createElement("img");
+    imgDefecto.src = "img/defecto.png";
+    maquina.appendChild(imgDefecto); 
+
+}
+
 
 
 
