@@ -1,1 +1,2 @@
-This is a development exercise required in the DWEC course of the official "CFGS DAW" degree. It is a simple rock-paper-scissors game.
+# Rock-Paper-Scissors
+This is an application created as a development activity required in the official CFGS DAW qualification. The activity only provided the HTML, CSS, and images, and the necessary functionality had to be added to develop a rock-paper-scissors game by uniquely adding a JS file. Element selection, state variables, DOM manipulation, events, and event-associated functions are used.
